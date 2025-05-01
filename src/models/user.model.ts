@@ -3,17 +3,15 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface Message extends Document {
   content: string;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 const MessageSchema: Schema<Message> = new Schema({
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
 });
 
 export interface User extends Document {
-  name: string;
+  fullname: string;
   email: string;
   password: string;
   username: string;
@@ -24,7 +22,7 @@ export interface User extends Document {
 }
 
 const UserSchema: Schema<User> = new Schema({
-  name: { type: String, required: [true, "Name is required"] },
+  fullname: { type: String, required: [true, "Name is required"] },
   email: {
     type: String,
     required: [true, "Email is required"],
