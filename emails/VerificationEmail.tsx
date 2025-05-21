@@ -102,7 +102,7 @@ export default function VerificationEmail({ username, otp }: VerificationEmailPr
                             </Section>
 
                             <Text className="text-gray-400 text-xs text-center mt-8">
-                                © 2023 TrueFeedback. All rights reserved.<br />
+                                © 2025 TrueFeedback. All rights reserved.<br />
                                 This email was sent to you because you signed up for TrueFeedback.
                             </Text>
                         </Section>
