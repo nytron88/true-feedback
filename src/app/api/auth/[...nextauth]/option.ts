@@ -117,8 +117,7 @@ export const authOptions: NextAuthOptions = {
     updateAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
-    signIn: "/sign-in",
-    error: "/auth/error", // Custom error page
+    signIn: "/signin",
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
