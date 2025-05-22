@@ -64,3 +64,16 @@ export async function registerUser(input: SignupInput): Promise<ApiResponse> {
     message: "User registered successfully. Please verify your account.",
   };
 }
+
+export async function checkUsername(username: string) {
+  const existingVerifiedUser = await UserModel.findOne({
+    username,
+    isVerified: true,
+  });
+
+  if (existingVerifiedUser) {
+    return { success: false, message: "Username is taken" };
+  }
+
+  return { success: true, message: "Username is unique" };
+}
