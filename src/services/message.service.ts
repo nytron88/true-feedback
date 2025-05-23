@@ -1,4 +1,4 @@
-import UserModel from "@/models/user.model";
+import UserModel, { Message } from "@/models/user.model";
 import mongoose from "mongoose";
 
 export async function toggleAcceptMessage(
@@ -72,5 +72,34 @@ export async function getMessages(userId: string) {
     success: true,
     message: "Messages fetched successfully",
     messages: user[0].messages,
+  };
+}
+
+export async function sendMessage(content: string, username: string) {
+  const user = await UserModel.findOne({ username });
+
+  if (!user) {
+    return { success: false, message: "User not found" };
+  }
+
+  if (!user.isAcceptingMessage) {
+    return {
+      success: false,
+      message: "User is not accepting messages",
+    };
+  }
+
+  const newMessage: Message = {
+    content,
+    createdAt: new Date(),
+  } as Message;
+
+  user.messages.push(newMessage);
+
+  await user.save();
+
+  return {
+    success: true,
+    message: "Message sent successfully",
   };
 }
