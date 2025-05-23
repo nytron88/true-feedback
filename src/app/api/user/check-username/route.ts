@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
 import { requireAuth } from "@/lib/requireAuth";
-import UserModel from "@/models/user.model";
 import { usernameValidation } from "@/schemas/signupSchema";
 import { checkUsername } from "@/services/user.service";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,9 +10,6 @@ const UsernameQuerySchema = z.object({
 });
 
 export async function GET(request: NextRequest) {
-  const token = await requireAuth(request);
-  if (token instanceof NextResponse) return token;
-
   await dbConnect();
   try {
     const { searchParams } = new URL(request.url);
