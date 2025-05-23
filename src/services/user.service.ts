@@ -65,6 +65,51 @@ export async function registerUser(input: SignupInput): Promise<ApiResponse> {
   };
 }
 
+export async function verifyUser(
+  username: string,
+  code: string
+): Promise<ApiResponse> {
+  const user = await UserModel.findOne({ username });
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not found",
+    };
+  }
+
+  if (user.isVerified) {
+    return {
+      success: false,
+      message: "User is already verified",
+    };
+  }
+
+  if (user.verifyCode !== code) {
+    return {
+      success: false,
+      message: "Invalid verification code",
+    };
+  }
+
+  if (user.verifyCodeExpiry && user.verifyCodeExpiry < new Date()) {
+    return {
+      success: false,
+      message: "Verification code has expired",
+    };
+  }
+
+  user.isVerified = true;
+  user.verifyCode = undefined;
+  user.verifyCodeExpiry = undefined;
+  await user.save();
+
+  return {
+    success: true,
+    message: "User verified successfully",
+  };
+}
+
 export async function checkUsername(username: string) {
   const existingVerifiedUser = await UserModel.findOne({
     username,
