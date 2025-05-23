@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const { username } = parsed.data;
 
     const result = await checkUsername(username);
-    return NextResponse.json(result, { status: result.success ? 201 : 400 });
+    return NextResponse.json(result, { status: result.success ? 200 : 400 });
   } catch (err) {
     console.error("Error checking username", err);
     return NextResponse.json(
