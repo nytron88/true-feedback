@@ -1,102 +1,144 @@
-import Image from "next/image";
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { MessageSquare, UserPlus, Shield, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { data: session } = useSession();
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen bg-black">
+      {/* Hero Section */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black" />
+        <div className="relative container mx-auto px-4 py-20 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl sm:text-6xl font-bold text-zinc-50 mb-6">
+              True Feedback
+            </h1>
+            <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-8">
+              Get real, anonymous feedback from real people. Share your thoughts and receive honest messages from others.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {!session ? (
+                <>
+                  <Button
+                    onClick={() => router.push("/signup")}
+                    className={cn(
+                      "bg-zinc-50 text-zinc-950 hover:bg-zinc-200",
+                      "transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+                    )}
+                  >
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button
+                    onClick={() => router.push("/signin")}
+                    className={cn(
+                      "bg-zinc-50 text-zinc-950 hover:bg-zinc-200",
+                      "transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+                    )}
+                  >
+                    Sign In
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => router.push("/dashboard")}
+                  className={cn(
+                    "bg-zinc-50 text-zinc-950 hover:bg-zinc-200",
+                    "transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+                  )}
+                >
+                  Go to Dashboard
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </div>
+
+      {/* Features Section */}
+      <div className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
+            <CardContent className="pt-6">
+              <MessageSquare className="h-12 w-12 text-zinc-50 mb-4" />
+              <h3 className="text-xl font-semibold text-zinc-50 mb-2">Anonymous Messages</h3>
+              <p className="text-zinc-400">
+                Send and receive honest feedback while maintaining complete anonymity.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
+            <CardContent className="pt-6">
+              <UserPlus className="h-12 w-12 text-zinc-50 mb-4" />
+              <h3 className="text-xl font-semibold text-zinc-50 mb-2">Create Your Profile</h3>
+              <p className="text-zinc-400">
+                Set up your profile and start receiving anonymous messages from others.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
+            <CardContent className="pt-6">
+              <Shield className="h-12 w-12 text-zinc-50 mb-4" />
+              <h3 className="text-xl font-semibold text-zinc-50 mb-2">Safe & Secure</h3>
+              <p className="text-zinc-400">
+                Your privacy is our priority. All messages are completely anonymous and secure.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-zinc-50 mb-4">
+            Ready to Get Started?
+          </h2>
+          <p className="text-zinc-400 mb-8 max-w-2xl mx-auto">
+            Join True Feedback today and start your journey of anonymous communication.
+          </p>
+          {!session && (
+            <Button
+              onClick={() => router.push("/signup")}
+              className={cn(
+                "bg-zinc-50 text-zinc-950 hover:bg-zinc-200",
+                "transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+              )}
+            >
+              Create Your Account
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-800">
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <div className="text-center text-zinc-400 text-sm">
+            <p>© {new Date().getFullYear()} True Feedback. All rights reserved.</p>
+            <div className="mt-4 space-x-4">
+              <Link href="/privacy" className="hover:text-zinc-50 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-zinc-50 transition-colors">
+                Terms of Service
+              </Link>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

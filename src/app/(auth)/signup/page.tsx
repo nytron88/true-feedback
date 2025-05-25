@@ -78,7 +78,7 @@ export default function SignUp() {
 
             if (response.data.success) {
                 toast.success("Account created successfully! Please verify your email.");
-                router.push("/verify");
+                router.push(`/verify/${values.username}`);
             } else {
                 toast.error(response.data.message || "Something went wrong");
             }
@@ -186,7 +186,7 @@ export default function SignUp() {
                                 type="submit"
                                 className={cn(
                                     "w-full bg-zinc-50 text-zinc-950 hover:bg-zinc-200",
-                                    "transition-colors duration-200"
+                                    "transition-colors duration-200 cursor-pointer"
                                 )}
                                 disabled={isLoading || isUsernameAvailable === false}
                             >

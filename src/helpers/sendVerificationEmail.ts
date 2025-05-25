@@ -12,12 +12,19 @@ export async function sendVerificationEmail(
   }
 
   try {
-    await resend.emails.send({
+    const emailResponse = await resend.emails.send({
       from: process.env.RESEND_DOMAIN,
       to: email,
       subject: "True Feedback | Verification code",
       react: VerificationEmail({ username, otp: verifyCode }),
     });
+
+    if(emailResponse.error) {
+      return {
+        success: false,
+        message: "Failed to send verification email",
+      };
+    }
 
     return {
       success: true,

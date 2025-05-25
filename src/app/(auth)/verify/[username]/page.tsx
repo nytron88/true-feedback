@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
-import Link from "next/link";
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { signinSchema } from "@/schemas/signinSchema";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import axios from "axios";
+import { toast } from "sonner";
+import { verifySchema } from "@/schemas/verifySchema";
 import {
     Form,
     FormControl,
@@ -23,16 +23,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Loader } from "@/components/ui/loader";
 import { cn } from "@/lib/utils";
 
-export default function SignIn() {
+export default function VerifyPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const params = useParams();
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof signinSchema>>({
-        resolver: zodResolver(signinSchema),
+    const form = useForm<z.infer<typeof verifySchema>>({
+        resolver: zodResolver(verifySchema),
         defaultValues: {
-            identifier: "",
-            password: "",
+            code: "",
         },
     });
 
@@ -42,25 +42,22 @@ export default function SignIn() {
         }
     }, [session, router]);
 
-    async function onSubmit(values: z.infer<typeof signinSchema>) {
+    async function onSubmit(values: z.infer<typeof verifySchema>) {
         try {
             setIsLoading(true);
-            const result = await signIn("credentials", {
-                identifier: values.identifier,
-                password: values.password,
-                redirect: false,
+            const response = await axios.post("/api/auth/verify", {
+                username: params.username,
+                code: values.code,
             });
 
-            if (result?.error) {
-                toast.error(result.error);
-                return;
+            if (response.data.success) {
+                toast.success("Email verified successfully!");
+                router.push("/signin");
+            } else {
+                toast.error(response.data.message || "Verification failed");
             }
-
-            toast.success("Signed in successfully!");
-            router.push("/dashboard");
-            router.refresh();
-        } catch (error) {
-            toast.error("Something went wrong. Please try again.");
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong");
         } finally {
             setIsLoading(false);
         }
@@ -80,10 +77,10 @@ export default function SignIn() {
             <Card className="relative w-full max-w-md border-none bg-zinc-950/50 backdrop-blur-xl shadow-2xl">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center text-zinc-50">
-                        Welcome back
+                        Verify your email
                     </CardTitle>
                     <CardDescription className="text-center text-zinc-400">
-                        Enter your credentials to access your account
+                        Enter the 6-digit code sent to your email
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -92,32 +89,14 @@ export default function SignIn() {
                             <div className="space-y-4 rounded-lg border border-zinc-800/50 bg-zinc-900/50 p-4">
                                 <FormField
                                     control={form.control}
-                                    name="identifier"
+                                    name="code"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-zinc-200">Email or Username</FormLabel>
+                                            <FormLabel className="text-zinc-200">Verification Code</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Enter your email or username"
-                                                    {...field}
-                                                    disabled={isLoading}
-                                                    className="bg-zinc-900/50 border-zinc-800 text-zinc-50 placeholder:text-zinc-500 focus:border-zinc-700 focus:ring-zinc-700"
-                                                />
-                                            </FormControl>
-                                            <FormMessage className="text-red-400" />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="text-zinc-200">Password</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="password"
-                                                    placeholder="Enter your password"
+                                                    placeholder="Enter 6-digit code"
+                                                    maxLength={6}
                                                     {...field}
                                                     disabled={isLoading}
                                                     className="bg-zinc-900/50 border-zinc-800 text-zinc-50 placeholder:text-zinc-500 focus:border-zinc-700 focus:ring-zinc-700"
@@ -139,10 +118,10 @@ export default function SignIn() {
                                 {isLoading ? (
                                     <>
                                         <Loader size="sm" className="mr-2" />
-                                        Signing in...
+                                        Verifying...
                                     </>
                                 ) : (
-                                    "Sign In"
+                                    "Verify Email"
                                 )}
                             </Button>
                         </form>
@@ -150,13 +129,13 @@ export default function SignIn() {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
                     <div className="text-sm text-center text-zinc-400">
-                        Don&apos;t have an account?{" "}
-                        <Link
-                            href="/signup"
-                            className="text-zinc-50 hover:text-zinc-200 transition-colors duration-200"
+                        Didn&apos;t receive the code?{" "}
+                        <button
+                            onClick={() => toast.info("Please check your spam folder or request a new code")}
+                            className="text-zinc-50 hover:text-zinc-200 transition-colors duration-200 cursor-pointer"
                         >
-                            Sign up
-                        </Link>
+                            Need help?
+                        </button>
                     </div>
                 </CardFooter>
             </Card>
