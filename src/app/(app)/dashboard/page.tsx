@@ -23,6 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 interface Message {
   _id: string;
@@ -144,12 +145,32 @@ export default function DashboardPage() {
             <Mail className="h-5 w-5 text-zinc-400" />
             <span className="text-zinc-50">{session?.user?.email}</span>
           </div>
-          <div
-            onClick={handleCopyProfileLink}
-            className="flex items-center space-x-4 p-3 rounded-lg border border-zinc-800 bg-zinc-900/50 cursor-pointer hover:bg-zinc-800/50 transition-colors"
-          >
-            <Copy className="h-5 w-5 text-zinc-400" />
-            <span className="text-zinc-50">Copy Profile Link</span>
+          <div className="space-y-4 p-4 rounded-lg border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <p className="text-zinc-50 font-medium">Your Profile Link</p>
+                <p className="text-sm text-zinc-400">
+                  Share this link to receive anonymous messages
+                </p>
+              </div>
+              <Button
+                onClick={handleCopyProfileLink}
+                variant="outline"
+                size="sm"
+                className="border-zinc-800 bg-zinc-900/50 text-zinc-50 hover:bg-zinc-800/50 hover:text-zinc-50 transition-all duration-200"
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copy Link
+              </Button>
+            </div>
+            <div className="p-3 rounded bg-zinc-950/50 border border-zinc-800">
+              <code className="text-zinc-400 text-sm break-all">
+                {`${window.location.origin}/u/${session?.user?.username}`}
+              </code>
+            </div>
+            <p className="text-sm text-zinc-500">
+              Anyone with this link can send you anonymous messages. Make sure to share it only with people you trust.
+            </p>
           </div>
         </CardContent>
       </Card>

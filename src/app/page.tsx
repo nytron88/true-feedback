@@ -99,6 +99,57 @@ export default function Home() {
         </div>
       </div>
 
+      {/* How It Works Section */}
+      <div className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-zinc-50 mb-4">How It Works</h2>
+          <p className="text-zinc-400 max-w-2xl mx-auto">
+            Sending anonymous messages is simple and secure. Here's how to get started:
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
+            <CardContent className="pt-6">
+              <h3 className="text-xl font-semibold text-zinc-50 mb-4">For Message Senders</h3>
+              <ol className="space-y-4 text-zinc-400">
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">1</span>
+                  <span>Get the profile link of the person you want to message</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">2</span>
+                  <span>Visit their profile page at <code className="px-2 py-1 rounded bg-zinc-800 text-zinc-50">/u/username</code></span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">3</span>
+                  <span>Write your message and click send - it's that simple!</span>
+                </li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          <Card className="border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
+            <CardContent className="pt-6">
+              <h3 className="text-xl font-semibold text-zinc-50 mb-4">For Message Receivers</h3>
+              <ol className="space-y-4 text-zinc-400">
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">1</span>
+                  <span>Create your account and set up your profile</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">2</span>
+                  <span>Share your profile link: <code className="px-2 py-1 rounded bg-zinc-800 text-zinc-50">/u/your-username</code></span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-50">3</span>
+                  <span>Receive and manage anonymous messages in your dashboard</span>
+                </li>
+              </ol>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
       {/* CTA Section */}
       <div className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
         <div className="text-center">
