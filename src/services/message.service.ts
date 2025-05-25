@@ -49,7 +49,10 @@ export async function getMessages(userId: string) {
       },
     },
     {
-      $unwind: "$messages",
+      $unwind: {
+        path: "$messages",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $sort: {

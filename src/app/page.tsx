@@ -130,12 +130,7 @@ export default function Home() {
           <div className="text-center text-zinc-400 text-sm">
             <p>© {new Date().getFullYear()} True Feedback. All rights reserved.</p>
             <div className="mt-4 space-x-4">
-              <Link href="/privacy" className="hover:text-zinc-50 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:text-zinc-50 transition-colors">
-                Terms of Service
-              </Link>
+              Made by Siddhant Jain
             </div>
           </div>
         </div>
