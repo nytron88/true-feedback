@@ -1,5 +1,4 @@
 import dbConnect from "@/lib/dbConnect";
-import { requireAuth } from "@/lib/requireAuth";
 import { usernameValidation } from "@/schemas/signupSchema";
 import { checkUsername } from "@/services/user.service";
 import { NextRequest, NextResponse } from "next/server";
