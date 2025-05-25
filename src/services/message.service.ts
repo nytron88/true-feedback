@@ -106,3 +106,19 @@ export async function sendMessage(content: string, username: string) {
     message: "Message sent successfully",
   };
 }
+
+export async function deleteMessage(userId: string, messageId: string) {
+  const updatedUserMessages = await UserModel.updateOne(
+    { _id: userId },
+    { $pull: { messages: { _id: messageId } } }
+  );
+
+  if (updatedUserMessages.matchedCount === 0) {
+    return {
+      success: false,
+      message: "Message not found or already deleted",
+    };
+  }
+
+  return { success: true, message: "Message deleted successfully" };
+}

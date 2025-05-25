@@ -13,6 +13,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Loader } from "@/components/ui/loader";
 import MessageCard from "@/components/MessageCard";
 import { User, Mail, Copy } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Message {
   _id: string;
@@ -24,6 +34,7 @@ export default function DashboardPage() {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof acceptMessageSchema>>({
     resolver: zodResolver(acceptMessageSchema),
@@ -80,12 +91,25 @@ export default function DashboardPage() {
   };
 
   const handleDeleteMessage = async (messageId: string) => {
+    setMessageToDelete(messageId);
+  };
+
+  const confirmDelete = async () => {
+    if (!messageToDelete) return;
+
     try {
-      // TODO: Implement delete message API call
-      toast.success("Message deleted successfully");
-      setMessages(messages.filter((msg) => msg._id !== messageId));
+      const response = await axios.delete(`/api/message/delete-message/${messageToDelete}`);
+
+      if (response.data.success) {
+        toast.success("Message deleted successfully");
+        setMessages(messages.filter((msg) => msg._id !== messageToDelete));
+      } else {
+        toast.error(response.data.message || "Failed to delete message");
+      }
     } catch (error) {
       toast.error("Failed to delete message");
+    } finally {
+      setMessageToDelete(null);
     }
   };
 
@@ -153,7 +177,7 @@ export default function DashboardPage() {
             <Switch
               checked={form.watch("acceptMessage")}
               onCheckedChange={handleAcceptMessageChange}
-              className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-zinc-700 transition-colors duration-200 ease-in-out"
+              className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-zinc-700 transition-colors duration-200 ease-in-out cursor-pointer"
             />
           </div>
         </CardContent>
@@ -183,6 +207,29 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Message Confirmation Dialog */}
+      <AlertDialog open={!!messageToDelete} onOpenChange={() => setMessageToDelete(null)}>
+        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-zinc-50">Delete Message</AlertDialogTitle>
+            <AlertDialogDescription className="text-zinc-400">
+              Are you sure you want to delete this message? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-zinc-900 text-zinc-50 border-zinc-800 hover:bg-zinc-800 hover:text-zinc-50 transition-colors cursor-pointer">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-600 text-white hover:bg-red-700 hover:text-white transition-colors cursor-pointer"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

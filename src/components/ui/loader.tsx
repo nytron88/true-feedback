@@ -23,7 +23,7 @@ export function Loader({ size = "md", className = "", fullScreen = false }: Load
             <Loader2
                 className={cn(
                     sizeClasses[size],
-                    "animate-spin text-primary"
+                    "animate-spin text-white"
                 )}
             />
         </div>
