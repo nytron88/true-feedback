@@ -175,7 +175,8 @@ export default function DashboardPage() {
             {messages.map((message) => (
               <MessageCard
                 key={message._id}
-                title={new Date(message.createdAt).toLocaleDateString()}
+                title={message.content}
+                createdAt={message.createdAt}
                 onDelete={() => handleDeleteMessage(message._id)}
               />
             ))}

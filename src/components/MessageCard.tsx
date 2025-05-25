@@ -7,20 +7,32 @@ import { cn } from "@/lib/utils";
 
 interface MessageCardProps {
   title: string;
+  createdAt: string;
   onDelete: () => void;
   className?: string;
 }
 
-export default function MessageCard({ title, onDelete, className }: MessageCardProps) {
+export default function MessageCard({ title, createdAt, onDelete, className }: MessageCardProps) {
   return (
     <Card className={cn(
       "border-zinc-800 bg-zinc-950/50 backdrop-blur-xl hover:bg-zinc-950/70 transition-colors duration-200",
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-lg font-semibold text-zinc-50">
-          {title}
-        </CardTitle>
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold text-zinc-50">
+            {title}
+          </CardTitle>
+          <p className="text-sm text-zinc-400">
+            {new Date(createdAt).toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </p>
+        </div>
         <Button
           variant="ghost"
           size="icon"

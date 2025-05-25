@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const { username, content } = await request.json();
 
-    const parsedUsername = usernameValidation.safeParse({ username });
+    const parsedUsername = usernameValidation.safeParse(username);
 
     if (!parsedUsername.success) {
       const usernameErrors = parsedUsername.error.format()._errors || [];

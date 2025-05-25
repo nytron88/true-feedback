@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     if (token instanceof NextResponse) return token;
 
     const result = await getMessages(token._id);
+    console.log(result);
     return NextResponse.json(result, { status: result.success ? 200 : 404 });
   } catch (err) {
     console.error("Error getting messages", err);
